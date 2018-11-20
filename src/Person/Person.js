@@ -6,9 +6,9 @@ import styles from "./Person.css";
 
 const person = (props) => {
   const style = {
-    "@media (min-width)": {
-      width: "400px",
-    }
+    // "@media (min-width)": {
+    //   width: "400px",
+    // }
   };
 
   return (

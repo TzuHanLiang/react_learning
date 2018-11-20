@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import styles from './App.css';
 import Person from "./Person/Person";
+import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 // radium is a popular package for react which allows
 // us to use inline styles with pseudo selectors and
@@ -70,76 +71,48 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: "green",
-      color: "white",
-      font: "inherit",
-      border: "1px solid green",
-      padding: "8px",
-      transition: "all .3s",
-
-      ":hover": {
-        backgroundColor: "mediumseagreen",
-        border: "1px solid mediumseagreen",
-        transform: "translateY(-3px)",
-        boxShadow: "0 10px 20px rgba(black, .2)", //doesn't work
-        cursor: "pointer",
-      },
-      ":active": {
-        backgroundColor: "LimeGreen",
-        border: "1px solid LimeGreen",
-        transform: "translateY(-1px)",
-        boxShadow: "0 5px 10px rgba(black, .4)",
-        cursor: "pointer",
-      },
-    }
-
     let persons = null;
+    let btnClass = "";
 
     if (this.state.showPerson) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person
-              click={this.deletePersonHandler.bind(this, index)}
-              name={person.name}
-              age={person.age}
-              // key property is actually a default property
-              // react expects to find on an html default elements
-              // and custom elements
-              key={person.id}
-              // we can access person.id because we are inside 
-              // the map method
-              changed={(event) => { this.nameChangedHandle(event, person.id) }}
-            />
+            // <ErrorBoudary>is so-called higher order component
+            // it's component which simple wraps a component with
+            // the goal of handling any errors that component
+            // might throw.
+
+            // && !!!! important
+            // key always has to be on the outer element in a map 
+            // method.
+
+            // key property is actually a default property
+            // react expects to find on an html default elements
+            // and custom elements
+            return <ErrorBoundary key={person.id}>
+            <Person
+            click={this.deletePersonHandler.bind(this, index)}
+            name={person.name}
+            age={person.age}
+            // we can access person.id because we are inside 
+            // the map method
+            changed={(event) => { this.nameChangedHandle(event, person.id) }}
+          /></ErrorBoundary>
           })}
         </div>
       );
-
-      style.backgroundColor = "red";
-      style[":hover"] = {
-        backgroundColor: "pink",
-        border: "1px solid pink",
-        transform: "translateY(-3px)",
-        boxShadow: "0 10px 20px rgba(black, .2)", //doesn't work
-        cursor: "pointer",
-      };
-      style[":active"] = {
-        backgroundColor: "LightCoral",
-        border: "1px solid LightCoral",
-        transform: "translateY(-1px)",
-        boxShadow: "0 5px 10px rgba(black, .4)",
-        cursor: "pointer",
-      };
+      btnClass = styles.Red
     }
+
    
     // let classes = ["red", "bold"].join(" ");
     const classes = [];
     if(this.state.persons.length <3){
-      classes.push("red");
+      classes.push(styles.red);
     }
     if(this.state.persons.length <2){
-      classes.push("bold");
+      classes.push(styles.bold);
     }
 
     return (
@@ -148,7 +121,7 @@ class App extends Component {
         <h1>Hi, I'm a React App</h1>
         <p className={classes.join(" ")}>This is really working!</p>
         <button
-          style={style}
+          className={btnClass}
           onClick={this.togglePersonHandler}>
           Toggle Persons
       </button>
