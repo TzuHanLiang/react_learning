@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { Component } from 'react';
-import './App.css';
+import styles from './App.css';
 import Person from "./Person/Person";
 
 // radium is a popular package for react which allows
@@ -144,7 +144,7 @@ class App extends Component {
 
     return (
       // <StyleRoot>
-        <div className="App">
+        <div className={styles.App}>
         <h1>Hi, I'm a React App</h1>
         <p className={classes.join(" ")}>This is really working!</p>
         <button
