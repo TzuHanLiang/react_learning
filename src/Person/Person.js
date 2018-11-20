@@ -1,7 +1,7 @@
 import React from 'react';
 // import Radium from "radium";
 
-import "./Person.css";
+import "./Person.module.css";
 
 const person = (props) => {
   const style = {
